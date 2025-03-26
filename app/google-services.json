@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "965565017004",
+    "project_id": "moodtrack-87920",
+    "storage_bucket": "moodtrack-87920.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:965565017004:android:8483142b15690375816809",
+        "android_client_info": {
+          "package_name": "com.example.moodtrack"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgV6pfBQaks9zOzxrSTumz_gMK3iXtvb8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
