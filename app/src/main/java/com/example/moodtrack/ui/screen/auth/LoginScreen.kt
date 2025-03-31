@@ -7,53 +7,76 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.moodtrack.ui.common.UiState
+import com.example.moodtrack.ui.components.InputField
 import com.example.moodtrack.ui.viewmodel.AuthViewModel
-import com.example.moodtrack.ui.viewmodel.LoginState
 
 @Composable
 fun LoginScreen(
     authViewModel: AuthViewModel = hiltViewModel(),
-    onLoginSuccess: () -> Unit
+    onLoginSuccess: () -> Unit,
+    onNavigateToRegister: () -> Unit
 ) {
     val context = LocalContext.current
     val loginState by authViewModel.loginState.collectAsState()
+    val errors by authViewModel.errors.collectAsState()
+
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
 
     LaunchedEffect(loginState) {
-        if (loginState is LoginState.Success) {
-            Toast.makeText(context, "Login Berhasil", Toast.LENGTH_SHORT).show()
-            onLoginSuccess()
-        } else if (loginState is LoginState.Error) {
-            Toast.makeText(context, (loginState as LoginState.Error).message, Toast.LENGTH_SHORT).show()
+        when (loginState) {
+            is UiState.Success -> {
+                Toast.makeText(context, "Login Berhasil", Toast.LENGTH_SHORT).show()
+                onLoginSuccess()
+            }
+            is UiState.Error -> {
+                Toast.makeText(context, (loginState as UiState.Error).errorMessage, Toast.LENGTH_SHORT).show()
+            }
+            else -> Unit
         }
     }
 
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        var email by remember { mutableStateOf("") }
-        var password by remember { mutableStateOf("") }
+        InputField(
+            value = email,
+            label = "Email",
+            error = errors["email"],
+            onValueChange = { email = it }
+        )
 
-        OutlinedTextField(value = email, onValueChange = { email = it }, label = { Text("Email") })
-        OutlinedTextField(value = password, onValueChange = { password = it }, label = { Text("Password") }, visualTransformation = PasswordVisualTransformation())
+        InputField(
+            value = password,
+            label = "Password",
+            isPassword = true,
+            error = errors["password"],
+            onValueChange = { password = it }
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Button(onClick = {
-            authViewModel.loginWithEmail(email, password) { success, errorMessage ->
-                if (success) {
-                    Toast.makeText(context, "Login berhasil!", Toast.LENGTH_SHORT).show()
-                    onLoginSuccess()
-                } else {
-                    Toast.makeText(context, "Gagal login: $errorMessage", Toast.LENGTH_SHORT).show()
-                }
+        Button(
+            onClick = { authViewModel.loginWithEmail(email, password) },
+            modifier = Modifier.fillMaxWidth(),
+            enabled = loginState !is UiState.Loading
+        ) {
+            if (loginState is UiState.Loading) {
+                CircularProgressIndicator(modifier = Modifier.size(24.dp))
+            } else {
+                Text("Login")
             }
-        }) {
-            Text("Login")
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        TextButton(onClick = onNavigateToRegister) {
+            Text("Belum punya akun? Daftar")
         }
     }
 }
