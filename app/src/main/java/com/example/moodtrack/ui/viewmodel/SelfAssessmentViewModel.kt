@@ -4,9 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.moodtrack.core.utils.SelfAssessmentQuestion
-import com.example.moodtrack.data.remote.services.OpenAIService
 import com.example.moodtrack.data.repository.OpenAIRepository
-import com.example.moodtrack.data.repository.SelfAssessmentRepository
 import com.example.moodtrack.ui.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +18,6 @@ class SelfAssessmentViewModel @Inject constructor(
     private val openAIRepository: OpenAIRepository
 ) : ViewModel() {
 
-    // Mendeklarasikan pertanyaan
     private val _questions = listOf(
         SelfAssessmentQuestion("Bagaimana suasana hatimu minggu ini?", listOf("Sangat bahagia", "Bahagia", "Netral", "Sedih", "Sangat sedih")),
         SelfAssessmentQuestion("Seberapa sering kamu merasa cemas?", listOf("Sangat jarang", "Jarang", "Kadang-kadang", "Sering", "Sangat sering")),
@@ -36,7 +33,6 @@ class SelfAssessmentViewModel @Inject constructor(
 
     val questions: List<SelfAssessmentQuestion> = _questions
 
-    // Menggunakan daftar pertanyaan untuk menentukan ukuran list jawaban
     private val _answers = MutableStateFlow(List(questions.size) { "" })
     val answers: StateFlow<List<String>> = _answers
 
@@ -70,17 +66,3 @@ class SelfAssessmentViewModel @Inject constructor(
         }
     }
 }
-
-
-//@HiltViewModel
-//class SelfAssessmentViewModel @Inject constructor(
-//    private val selfAssessmentRepository: SelfAssessmentRepository
-//) : ViewModel() {
-//
-//    private val _formUrl = MutableStateFlow<String>("")
-//    val formUrl: StateFlow<String> = _formUrl.asStateFlow()
-//
-//    init {
-//        _formUrl.value = selfAssessmentRepository.getFormUrl()
-//    }
-//}

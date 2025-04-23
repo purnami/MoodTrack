@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import com.example.moodtrack.core.utils.toMoodLabel
 
 
 @HiltViewModel
@@ -22,9 +21,6 @@ class RecommendationViewModel @Inject constructor(
     private val recommendationRepository: RecommendationRepository,
     private val openAIRepository: OpenAIRepository
 ) : ViewModel() {
-
-//    private val _musicState = MutableStateFlow<UiState<List<MusicItem>>>(UiState.Idle)
-//    val musicState: StateFlow<UiState<List<MusicItem>>> = _musicState.asStateFlow()
 
     private val _videoState = MutableStateFlow<UiState<List<VideoItem>>>(UiState.Idle)
     val videoState: StateFlow<UiState<List<VideoItem>>> = _videoState.asStateFlow()
@@ -49,18 +45,6 @@ class RecommendationViewModel @Inject constructor(
     init {
         analyzeMood(mood.value.toMoodLabel(), note.value)
     }
-
-//    fun fetchMusicByMood(mood: Int) {
-//        viewModelScope.launch {
-//            _musicState.value = UiState.Loading
-//            recommendationRepository.getMusicByMood(mood).collect { result ->
-//                _musicState.value = result.fold(
-//                    onSuccess = { UiState.Success(it) },
-//                    onFailure = { UiState.Error(it.message ?: "Terjadi kesalahan") }
-//                )
-//            }
-//        }
-//    }
 
     fun fetchVideosByMood(apiKey: String, mood: Int) {
         Log.d("RecommendationViewModel", "Fetching videos for mood: $mood")

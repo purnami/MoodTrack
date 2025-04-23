@@ -67,7 +67,6 @@ class AuthViewModel @Inject constructor(private val authRepository: AuthReposito
         _confirmPasswordVisible.value = !_confirmPasswordVisible.value
     }
 
-    private val _isUserLoggedIn = MutableStateFlow(false)
     val isUserLoggedIn: StateFlow<Boolean> = authRepository.getCurrentUserFlow()
         .map { it != null }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)

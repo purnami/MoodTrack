@@ -6,7 +6,6 @@ import com.example.moodtrack.data.local.dao.MoodDao
 import com.example.moodtrack.data.local.database.MoodDatabase
 import com.example.moodtrack.data.local.preferences.UserPreferences
 import com.example.moodtrack.data.remote.services.OpenAIService
-import com.example.moodtrack.data.remote.services.SelfAssessmentApiService
 import com.example.moodtrack.data.remote.services.YoutubeApiService
 import com.example.moodtrack.data.repository.AuthRepository
 import com.example.moodtrack.data.repository.MoodRepository
@@ -97,17 +96,6 @@ object AppModule {
     fun provideOpenAIService(client: HttpClient): OpenAIService {
         return OpenAIService(client)
     }
-
-    @Provides
-    @Singleton
-    fun provideSelfAssessmentApiService(): SelfAssessmentApiService {
-        return SelfAssessmentApiService()
-    }
-
-//    @Provides
-//    fun provideSelfAssessmentApiService(): SelfAssessmentApiService {
-//        return SelfAssessmentApiService()
-//    }
 
     @Provides
     @Singleton

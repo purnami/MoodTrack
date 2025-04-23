@@ -44,10 +44,9 @@ fun MoodChart(moodList: List<MoodEntity>) {
                 setDrawCircles(true)
                 setDrawValues(true)
 
-                // Formatter untuk nilai di atas titik
                 valueFormatter = object : ValueFormatter() {
                     override fun getFormattedValue(value: Float): String {
-                        return value.toInt().toString() // Hapus .00
+                        return value.toInt().toString()
                     }
                 }
             }

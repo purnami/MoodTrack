@@ -25,6 +25,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.example.moodtrack.R
 import com.example.moodtrack.ui.viewmodel.AuthViewModel
+
 @Composable
 fun ProfileScreen(
     authViewModel: AuthViewModel = hiltViewModel(),
@@ -44,7 +45,6 @@ fun ProfileScreen(
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Foto Profil + Edit
             Box(modifier = Modifier.size(120.dp)) {
                 Image(
                     painter = rememberAsyncImagePainter(user!!.photoUrl ?: R.drawable.placeholder_profile),
@@ -55,7 +55,7 @@ fun ProfileScreen(
                         .border(2.dp, Color.Gray, CircleShape)
                 )
                 IconButton(
-                    onClick = { /* buka galeri atau dialog ganti foto */ },
+                    onClick = {  },
                     modifier = Modifier
                         .align(Alignment.BottomEnd)
                         .background(Color.White, shape = CircleShape)
@@ -67,13 +67,11 @@ fun ProfileScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Nama Pengguna
             Text(
                 text = user?.displayName ?: "Nama tidak tersedia",
                 style = MaterialTheme.typography.titleMedium
             )
 
-            // Email
             Text(
                 text = user?.email ?: "Email tidak tersedia",
                 style = MaterialTheme.typography.bodySmall,
@@ -82,7 +80,6 @@ fun ProfileScreen(
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // Tombol Navigasi
             Button(
                 onClick = onNavigateToSettings,
                 modifier = Modifier.fillMaxWidth()
@@ -126,50 +123,3 @@ fun ProfileScreen(
         }
     }
 }
-
-//@Composable
-//fun ProfileScreen(
-//    authViewModel: AuthViewModel = hiltViewModel(),
-//    onLogoutSuccess: () -> Unit
-//) {
-//    val context = LocalContext.current
-//    val isUserLoggedIn by authViewModel.isUserLoggedIn.collectAsState()
-//
-//    if (isUserLoggedIn) {
-//        Column(
-//            modifier = Modifier
-//                .fillMaxSize()
-//                .padding(16.dp),
-//            horizontalAlignment = Alignment.CenterHorizontally,
-//            verticalArrangement = Arrangement.Center
-//        ) {
-//            // Menampilkan informasi akun pengguna jika sudah login
-//            Text(
-//                text = "Pengguna sudah login.",
-//                style = MaterialTheme.typography.bodyMedium
-//            )
-//
-//            Spacer(modifier = Modifier.height(32.dp))
-//
-//            // Tombol Logout
-//            Button(
-//                onClick = {
-//                    authViewModel.logout()
-//                    Toast.makeText(context, "Logout Berhasil", Toast.LENGTH_SHORT).show()
-//                    onLogoutSuccess() // Panggil callback setelah logout berhasil
-//                },
-//                modifier = Modifier.fillMaxWidth()
-//            ) {
-//                Text("Logout")
-//            }
-//        }
-//    } else {
-//        // Jika pengguna belum login, tampilkan pesan
-//        Text(
-//            text = "Pengguna belum login.",
-//            style = MaterialTheme.typography.bodyMedium,
-//            modifier = Modifier.fillMaxSize(),
-//            textAlign = TextAlign.Center
-//        )
-//    }
-//}

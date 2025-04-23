@@ -22,7 +22,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.moodtrack.core.utils.toMoodLabel
 import com.example.moodtrack.ui.navigation.BottomNavBar
 import com.example.moodtrack.ui.navigation.Screen
 import com.example.moodtrack.ui.screen.mood.MoodInputScreen

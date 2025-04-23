@@ -117,36 +117,3 @@ fun SelfAssessmentScreen(
         }
     }
 }
-
-
-
-
-//@Composable
-//fun SelfAssessmentScreen(
-//    viewModel: SelfAssessmentViewModel = hiltViewModel()
-//) {
-//    val formUrl by viewModel.formUrl.collectAsState()
-//
-//    Column(modifier = Modifier.fillMaxSize()) {
-//        Text(
-//            text = "Self-Assessment",
-//            style = MaterialTheme.typography.bodyMedium,
-//            modifier = Modifier.padding(16.dp)
-//        )
-//        Spacer(modifier = Modifier.height(16.dp))
-//        WebViewComponent(formUrl = formUrl)
-//    }
-//}
-//
-//@Composable
-//fun WebViewComponent(formUrl: String) {
-//    AndroidView(
-//        factory = { context ->
-//            WebView(context).apply {
-//                settings.javaScriptEnabled = true
-//                loadUrl(formUrl)
-//            }
-//        },
-//        modifier = Modifier.fillMaxSize()
-//    )
-//}

@@ -54,7 +54,7 @@ class OpenAIService(private val client: HttpClient) {
 
         val moodDataString = moodList.joinToString("\n") { mood ->
             val date = dateFormat.format(Date(mood.timestamp))
-            val moodLevel = mood.mood // anggap 1 = sangat sedih, 5 = sangat bahagia
+            val moodLevel = mood.mood
             val note = mood.note?.ifBlank { "-" } ?: "-"
             "Tanggal: $date, Mood: $moodLevel, Catatan: $note"
         }

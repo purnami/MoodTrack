@@ -19,14 +19,6 @@ class YoutubeApiService {
         }
     }
 
-//    suspend fun getTop10TracksByArtist(artist: String): List<MusicItem> {
-//        val response: AudioDbResponse = client.get("https://theaudiodb.com/api/v1/json/2/track-top10.php?s=$artist")
-//            .body()
-//        return response.track.map {
-//            MusicItem(title = it.strTrack, artist = it.strArtist, url = it.strMusicVid ?: "")
-//        }
-//    }
-
     suspend fun getYouTubeVideos(apiKey: String, query: String): List<VideoItem> {
         val response: YouTubeApiResponse = client.get("https://www.googleapis.com/youtube/v3/search") {
             parameter("part", "snippet")

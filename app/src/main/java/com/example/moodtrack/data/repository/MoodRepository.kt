@@ -19,7 +19,6 @@ import java.util.Calendar
 import java.util.UUID
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
-//import kotlin.coroutines.jvm.internal.CompletedContinuation.context
 
 class MoodRepository @Inject constructor(
     private val moodDao: MoodDao,
@@ -77,54 +76,6 @@ class MoodRepository @Inject constructor(
         return moodDao.getLastMoodByUser(userId)
     }
 
-//    fun getMoodsByUserIdFromFirestore(period: MoodPeriod): Flow<List<MoodEntity>> = flow {
-//        val userId = userPreferences.getUserId()
-//        Log.d("Firestore", "User ID: $userId")
-//
-//        if (userId != null) {
-////            val calendar = Calendar.getInstance()
-//
-//            val startOfDayMillis = Calendar.getInstance().apply {
-//                set(Calendar.HOUR_OF_DAY, 0)
-//                set(Calendar.MINUTE, 0)
-//                set(Calendar.SECOND, 0)
-//                set(Calendar.MILLISECOND, 0)
-//            }.timeInMillis
-//
-//            val endOfDayMillis = Calendar.getInstance().apply {
-//                set(Calendar.HOUR_OF_DAY, 23)
-//                set(Calendar.MINUTE, 59)
-//                set(Calendar.SECOND, 59)
-//                set(Calendar.MILLISECOND, 999)
-//            }.timeInMillis
-//
-//            try {
-//                val querySnapshot = firestore.collection("moods")
-//                    .whereEqualTo("userId", userId)
-//                    .whereGreaterThanOrEqualTo("timestamp", startOfDayMillis)
-//                    .whereLessThan("timestamp", endOfDayMillis)
-//                    .orderBy("timestamp", Query.Direction.ASCENDING)
-//                    .get()
-//                    .await()
-//
-//                Log.d("Firestore", "Query snapshot: $querySnapshot")
-//
-//                val moods = querySnapshot.documents.mapNotNull { document ->
-//                    document.toObject(MoodEntity::class.java)
-//                }
-//
-//                Log.d("Firestore", "Fetched moods: $moods")
-//
-//                emit(moods)
-//            } catch (e: Exception) {
-//                Log.e("Firestore", "Gagal mengambil mood dari Firestore", e)
-//                emit(emptyList<MoodEntity>())
-//            }
-//        } else {
-//            emit(emptyList<MoodEntity>())
-//        }
-//    }
-
     fun getMoodsByUserIdFromFirestore(period: MoodPeriod): Flow<List<MoodEntity>> = flow {
         val userId = userPreferences.getUserId()
         Log.d("Firestore", "User ID: $userId")
@@ -133,7 +84,6 @@ class MoodRepository @Inject constructor(
             try {
                 val now = Calendar.getInstance()
 
-                // Hitung timestamp range berdasarkan periode
                 val startMillis: Long
                 val endMillis: Long = now.timeInMillis
 
@@ -147,7 +97,7 @@ class MoodRepository @Inject constructor(
                     }
 
                     MoodPeriod.WEEKLY -> {
-                        now.set(Calendar.DAY_OF_WEEK, now.firstDayOfWeek) // Awal minggu (biasanya Minggu/Senin)
+                        now.set(Calendar.DAY_OF_WEEK, now.firstDayOfWeek)
                         now.set(Calendar.HOUR_OF_DAY, 0)
                         now.set(Calendar.MINUTE, 0)
                         now.set(Calendar.SECOND, 0)
@@ -156,7 +106,7 @@ class MoodRepository @Inject constructor(
                     }
 
                     MoodPeriod.MONTHLY -> {
-                        now.set(Calendar.DAY_OF_MONTH, 1) // Awal bulan
+                        now.set(Calendar.DAY_OF_MONTH, 1)
                         now.set(Calendar.HOUR_OF_DAY, 0)
                         now.set(Calendar.MINUTE, 0)
                         now.set(Calendar.SECOND, 0)
@@ -192,28 +142,24 @@ class MoodRepository @Inject constructor(
         Log.d("MoodNotification", "Scheduling mood notifications")
         val calendar = Calendar.getInstance()
 
-        // Jam 9 Pagi
         calendar.set(Calendar.HOUR_OF_DAY, 9)
         calendar.set(Calendar.MINUTE, 0)
         val morningReminder = OneTimeWorkRequestBuilder<MoodNotificationWorker>()
             .setInitialDelay(getInitialDelay(calendar), TimeUnit.MILLISECONDS)
             .build()
 
-        // Jam 3 Sore
-        calendar.set(Calendar.HOUR_OF_DAY, 16)
-        calendar.set(Calendar.MINUTE, 18)
+        calendar.set(Calendar.HOUR_OF_DAY, 15)
+        calendar.set(Calendar.MINUTE, 0)
         val afternoonReminder = OneTimeWorkRequestBuilder<MoodNotificationWorker>()
             .setInitialDelay(getInitialDelay(calendar), TimeUnit.MILLISECONDS)
             .build()
 
-        // Jam 9 Malam
-        calendar.set(Calendar.HOUR_OF_DAY, 16)
-        calendar.set(Calendar.MINUTE, 19)
+        calendar.set(Calendar.HOUR_OF_DAY, 21)
+        calendar.set(Calendar.MINUTE, 0)
         val eveningReminder = OneTimeWorkRequestBuilder<MoodNotificationWorker>()
             .setInitialDelay(getInitialDelay(calendar), TimeUnit.MILLISECONDS)
             .build()
 
-        // Menjadwalkan WorkManager
         WorkManager.getInstance(context.applicationContext).apply {
             enqueue(morningReminder)
             enqueue(afternoonReminder)
@@ -229,9 +175,9 @@ class MoodRepository @Inject constructor(
 
         Log.d("MoodNotification", "Current time: $currentTime, Target time: $targetTime")
         return if (targetTime > currentTime) {
-            targetTime - currentTime // Waktu yang tersisa hingga jadwal berikutnya
+            targetTime - currentTime
         } else {
-            targetTime + TimeUnit.DAYS.toMillis(1) - currentTime // Jika waktu sudah lewat, set untuk hari berikutnya
+            targetTime + TimeUnit.DAYS.toMillis(1) - currentTime
         }
     }
 }
