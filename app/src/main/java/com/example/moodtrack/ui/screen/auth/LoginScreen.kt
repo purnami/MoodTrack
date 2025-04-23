@@ -22,9 +22,9 @@ fun LoginScreen(
     val context = LocalContext.current
     val loginState by authViewModel.loginState.collectAsState()
     val errors by authViewModel.errors.collectAsState()
-
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
+    val email by authViewModel.email.collectAsState()
+    val password by authViewModel.password.collectAsState()
+    val passwordVisible by authViewModel.passwordVisible.collectAsState()
 
     LaunchedEffect(loginState) {
         when (loginState) {
@@ -48,21 +48,23 @@ fun LoginScreen(
             value = email,
             label = "Email",
             error = errors["email"],
-            onValueChange = { email = it }
+            onValueChange = { authViewModel.updateEmail(it) }
         )
 
         InputField(
             value = password,
             label = "Password",
             isPassword = true,
+            isPasswordVisible = passwordVisible,
+            onVisibilityChange = { authViewModel.togglePasswordVisibility() },
             error = errors["password"],
-            onValueChange = { password = it }
+            onValueChange = { authViewModel.updatePassword(it) }
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
-            onClick = { authViewModel.loginWithEmail(email, password) },
+            onClick = { authViewModel.loginWithEmail() },
             modifier = Modifier.fillMaxWidth(),
             enabled = loginState !is UiState.Loading
         ) {

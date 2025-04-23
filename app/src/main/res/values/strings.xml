@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">MoodTrack</string>
+    <string name="menu_mood">Mood</string>
+    <string name="menu_statistic">Statistic</string>
+    <string name="menu_self_assessment">Self Test</string>
+    <string name="menu_profile">Profile</string>
 </resources>

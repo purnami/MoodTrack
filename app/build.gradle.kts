@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.dagger.hilt)
+    alias(libs.plugins.kotlin.serialization)
     id("kotlin-kapt")
     id("com.google.gms.google-services")
     id("com.google.devtools.ksp")
@@ -44,7 +45,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -65,8 +65,9 @@ dependencies {
 //    kapt("com.google.dagger:hilt-android-compiler:2.51.1")
 //
 //    implementation(libs.firebase.bom)
-    implementation(platform("com.google.firebase:firebase-bom:33.11.0"))
+    implementation(platform("com.google.firebase:firebase-bom:33.12.0"))
     implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.firebase:firebase-firestore-ktx:25.1.3")
 //    implementation(libs.firebase.auth.ktx)
 
     // ViewModel + LiveData
@@ -92,4 +93,36 @@ dependencies {
     implementation(libs.material3)
     implementation(libs.androidx.material.icons.extended)
 
+//    implementation(libs.mpandroidchart)
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
+    //ktor
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.cio)
+    implementation(libs.ktor.client.okhttp)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.serialization.kotlinx.json)
+
+    implementation(libs.play.services.auth)
+
+    implementation(libs.ktor.client.serialization)
+    implementation(libs.kotlinx.serialization.json)
+
+    implementation(libs.coil.compose)
+
+    implementation("com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0")
+
+    implementation(libs.androidx.work.runtime.ktx)
+
+//    implementation("androidx.compose.material:material:1.7.8")
+//    implementation("com.google.accompanist:accompanist-swiperefresh:0.28.0")
+//    implementation("androidx.compose.material3:material-pullrefresh:1.3.2")
+//    implementation("androidx.compose.material3:material3:1.3.2")
+    implementation("androidx.compose.material3:material3:1.4.0-alpha12")
+//    implementation("androidx.compose.material3:material3-pullrefresh:1.4.0-alpha01")
+
+
+
+
+//    implementation("androidx.compose.material:material-pullrefresh:1.0.0")
 }

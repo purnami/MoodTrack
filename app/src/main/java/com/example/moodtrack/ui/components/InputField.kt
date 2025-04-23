@@ -20,9 +20,11 @@ fun InputField(
     label: String,
     error: String? = null,
     isPassword: Boolean = false,
+    isPasswordVisible: Boolean = false,
+    onVisibilityChange: () -> Unit = {},
     onValueChange: (String) -> Unit
 ) {
-    var passwordVisible by remember { mutableStateOf(false) }
+
     val keyboardController = LocalSoftwareKeyboardController.current
 
     Column(modifier = Modifier.fillMaxWidth()) {
@@ -31,13 +33,13 @@ fun InputField(
             onValueChange = onValueChange,
             label = { Text(label) },
             isError = error != null,
-            visualTransformation = if (isPassword && !passwordVisible) PasswordVisualTransformation() else VisualTransformation.None,
+            visualTransformation = if (isPassword && !isPasswordVisible) PasswordVisualTransformation() else VisualTransformation.None,
             trailingIcon = {
                 if (isPassword) {
-                    IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                    IconButton(onClick = { onVisibilityChange() }) {
                         Icon(
-                            imageVector = if (passwordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
-                            contentDescription = if (passwordVisible) "Hide Password" else "Show Password"
+                            imageVector = if (isPasswordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+                            contentDescription = if (isPasswordVisible) "Hide Password" else "Show Password"
                         )
                     }
                 }
