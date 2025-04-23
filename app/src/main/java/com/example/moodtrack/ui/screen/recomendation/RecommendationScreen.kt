@@ -65,7 +65,7 @@ fun RecommendationScreen(
     LaunchedEffect(Unit) {
         viewModel.setMood(mood)
         viewModel.setNote(note)
-        viewModel.fetchVideosByMood("AIzaSyAUnKlATFOkY_QO6Y0sACMNfTvuJIqYTuI", mood)
+        viewModel.fetchVideosByMood(mood)
     }
 
     Scaffold(
