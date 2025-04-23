@@ -1,10 +1,12 @@
 package com.example.moodtrack.ui.viewmodel
 
+import android.util.Log
 import android.util.Patterns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.moodtrack.data.repository.AuthRepository
 import com.example.moodtrack.ui.common.UiState
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseUser
@@ -30,17 +32,55 @@ class AuthViewModel @Inject constructor(private val authRepository: AuthReposito
     private val _errors = MutableStateFlow<Map<String, String>>(emptyMap())
     val errors: StateFlow<Map<String, String>> = _errors.asStateFlow()
 
+    private val _email = MutableStateFlow("")
+    val email: StateFlow<String> = _email.asStateFlow()
+
+    private val _password = MutableStateFlow("")
+    val password: StateFlow<String> = _password.asStateFlow()
+
+    private val _confirmPassword = MutableStateFlow("")
+    val confirmPassword: StateFlow<String> = _confirmPassword.asStateFlow()
+
+    private val _passwordVisible = MutableStateFlow(false)
+    val passwordVisible: StateFlow<Boolean> = _passwordVisible.asStateFlow()
+
+    private val _confirmPasswordVisible = MutableStateFlow(false)
+    val confirmPasswordVisible: StateFlow<Boolean> = _confirmPasswordVisible.asStateFlow()
+
+    fun updateEmail(newEmail: String) {
+        _email.value = newEmail
+    }
+
+    fun updatePassword(newPassword: String) {
+        _password.value = newPassword
+    }
+
+    fun updateConfirmPassword(newConfirmPassword: String) {
+        _confirmPassword.value = newConfirmPassword
+    }
+
+    fun togglePasswordVisibility() {
+        _passwordVisible.value = !_passwordVisible.value
+    }
+
+    fun toggleConfirmPasswordVisibility() {
+        _confirmPasswordVisible.value = !_confirmPasswordVisible.value
+    }
+
+    private val _isUserLoggedIn = MutableStateFlow(false)
     val isUserLoggedIn: StateFlow<Boolean> = authRepository.getCurrentUserFlow()
         .map { it != null }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
 
-    fun loginWithEmail(email: String, password: String) {
-        val validationErrors = inputValidation(email, password, isRegis = false)
+    val currentUser = MutableStateFlow(FirebaseAuth.getInstance().currentUser)
+
+    fun loginWithEmail() {
+        val validationErrors = inputValidation(_email.value, _password.value, isRegis = false)
         _errors.value = validationErrors
         if (validationErrors.isNotEmpty()) return
         _loginState.value = UiState.Loading
         viewModelScope.launch {
-            authRepository.login(email, password).collect { result ->
+            authRepository.login(_email.value, _password.value).collect { result ->
                 _loginState.value = result.fold(
                     onSuccess = { UiState.Success(Unit) },
                     onFailure = { exception ->
@@ -58,6 +98,7 @@ class AuthViewModel @Inject constructor(private val authRepository: AuthReposito
     }
 
     fun registerWithEmail(email: String, password: String, confirmPassword: String) {
+        Log.d("AuthViewModel", "Registering with email: $email");
         val validationErrors = inputValidation(email, password, confirmPassword, true)
         _errors.value = validationErrors
 
@@ -109,6 +150,12 @@ class AuthViewModel @Inject constructor(private val authRepository: AuthReposito
 
     private suspend fun checkIfEmailExists(email: String): Boolean {
         return authRepository.checkEmailExists(email)
+    }
+
+    fun logout() {
+        viewModelScope.launch {
+            authRepository.logout()
+        }
     }
 
 }

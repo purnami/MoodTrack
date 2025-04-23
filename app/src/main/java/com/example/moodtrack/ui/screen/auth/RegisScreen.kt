@@ -23,9 +23,12 @@ fun RegisScreen(
     val registerState by authViewModel.registerState.collectAsState()
     val errors by authViewModel.errors.collectAsState()
 
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var confirmPassword by remember { mutableStateOf("") }
+    val email by authViewModel.email.collectAsState()
+    val password by authViewModel.password.collectAsState()
+    val confirmPassword by authViewModel.confirmPassword.collectAsState()
+
+    val passwordVisible by authViewModel.passwordVisible.collectAsState()
+    val confirmPasswordVisible by authViewModel.confirmPasswordVisible.collectAsState()
 
     LaunchedEffect(registerState) {
         when (registerState) {
@@ -45,27 +48,33 @@ fun RegisScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        Spacer(modifier = Modifier.height(32.dp))
+
         InputField(
             value = email,
             label = "Email",
             error = errors["email"],
-            onValueChange = { email = it }
+            onValueChange = { authViewModel.updateEmail(it) }
         )
 
         InputField(
             value = password,
             label = "Password",
             isPassword = true,
+            isPasswordVisible = passwordVisible,
+            onVisibilityChange = { authViewModel.togglePasswordVisibility() },
             error = errors["password"],
-            onValueChange = { password = it }
+            onValueChange = { authViewModel.updatePassword(it) }
         )
 
         InputField(
             value = confirmPassword,
             label = "Konfirmasi Password",
             isPassword = true,
+            isPasswordVisible = confirmPasswordVisible,
+            onVisibilityChange = { authViewModel.toggleConfirmPasswordVisibility() },
             error = errors["confirmPassword"],
-            onValueChange = { confirmPassword = it }
+            onValueChange = { authViewModel.updateConfirmPassword(it) }
         )
 
         Spacer(modifier = Modifier.height(16.dp))

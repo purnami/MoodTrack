@@ -1,5 +1,6 @@
 package com.example.moodtrack.data.repository
 
+import com.example.moodtrack.data.local.preferences.UserPreferences
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseUser
@@ -11,12 +12,19 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class AuthRepository @Inject constructor(private val auth: FirebaseAuth) {
+class AuthRepository @Inject constructor(
+    private val auth: FirebaseAuth,
+    private val userPreferences: UserPreferences
+) {
 
     fun login(email: String, password: String): Flow<Result<FirebaseUser?>> = callbackFlow {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
+                    val user = auth.currentUser
+                    user?.uid?.let { uid ->
+                        userPreferences.saveUserId(uid)
+                    }
                     trySend(Result.success(auth.currentUser))
                 } else {
                     trySend(Result.failure(task.exception ?: Exception("Login gagal")))
@@ -30,6 +38,10 @@ class AuthRepository @Inject constructor(private val auth: FirebaseAuth) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
+                    val user = auth.currentUser
+                    user?.uid?.let { uid ->
+                        userPreferences.saveUserId(uid)
+                    }
                     trySend(Result.success(auth.currentUser))
                 } else {
                     trySend(Result.failure(task.exception ?: Exception("Registrasi gagal")))
@@ -54,8 +66,8 @@ class AuthRepository @Inject constructor(private val auth: FirebaseAuth) {
     fun logout() {
         auth.signOut()
     }
-//
-//    fun getCurrentUser(): FirebaseUser? = auth.currentUser
+
+    fun getCurrentUserId(): String = auth.currentUser!!.uid
 
     fun getCurrentUserFlow(): Flow<FirebaseUser?> = callbackFlow {
         val listener = FirebaseAuth.AuthStateListener { auth ->

@@ -10,12 +10,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.moodtrack.ui.viewmodel.AuthViewModel
 
 @Composable
 fun SplashScreen(
-    navController: NavController,
+    navController: NavHostController = rememberNavController(),
     authViewModel: AuthViewModel = hiltViewModel()
 ) {
     val isUserLoggedIn by authViewModel.isUserLoggedIn.collectAsState()
@@ -23,11 +24,14 @@ fun SplashScreen(
     LaunchedEffect(isUserLoggedIn) {
         if (isUserLoggedIn) {
             navController.navigate("home") {
-                popUpTo("splash") { inclusive = true }
+//                popUpTo("splash") { inclusive = true }
+//                popUpTo(0) { inclusive = true }
+                popUpTo(navController.graph.startDestinationId) { inclusive = true }
             }
         } else {
             navController.navigate("login") {
-                popUpTo("splash") { inclusive = true }
+//                popUpTo("splash") { inclusive = true }
+                popUpTo(0) { inclusive = true }
             }
         }
     }
