@@ -16,8 +16,7 @@ import java.util.*
 
 class OpenAIService(private val client: HttpClient) {
 
-    private val apiKey = "Bearer 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"
-    private val json = Json { ignoreUnknownKeys = true }
+   private val json = Json { ignoreUnknownKeys = true }
 
     suspend fun analyzeMood(mood: String, note: String): String {
         val prompt = "Mood: $mood. Note: $note"
