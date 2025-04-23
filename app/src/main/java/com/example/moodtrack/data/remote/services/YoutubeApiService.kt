@@ -11,7 +11,9 @@ import io.ktor.client.request.*
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
-class YoutubeApiService {
+class YoutubeApiService(
+    private val apiKey: String
+) {
 
     private val client = HttpClient {
         install(ContentNegotiation) {
@@ -19,7 +21,7 @@ class YoutubeApiService {
         }
     }
 
-    suspend fun getYouTubeVideos(apiKey: String, query: String): List<VideoItem> {
+    suspend fun getYouTubeVideos(query: String): List<VideoItem> {
         val response: YouTubeApiResponse = client.get("https://www.googleapis.com/youtube/v3/search") {
             parameter("part", "snippet")
             parameter("q", query)

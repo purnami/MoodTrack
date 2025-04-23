@@ -14,9 +14,11 @@ import kotlinx.serialization.json.Json
 import java.text.SimpleDateFormat
 import java.util.*
 
-class OpenAIService(private val client: HttpClient) {
-
-   private val json = Json { ignoreUnknownKeys = true }
+class OpenAIService(
+    private val client: HttpClient,
+    private val apiKey: String
+) {
+    private val json = Json { ignoreUnknownKeys = true }
 
     suspend fun analyzeMood(mood: String, note: String): String {
         val prompt = "Mood: $mood. Note: $note"
@@ -89,7 +91,7 @@ class OpenAIService(private val client: HttpClient) {
 
         return try {
             val response: HttpResponse = client.post("https://api.openai.com/v1/chat/completions") {
-                header(HttpHeaders.Authorization, apiKey)
+                header(HttpHeaders.Authorization, "Bearer $apiKey")
                 contentType(ContentType.Application.Json)
                 setBody(jsonBody)
             }

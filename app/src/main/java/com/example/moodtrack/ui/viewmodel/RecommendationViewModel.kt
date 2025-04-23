@@ -46,11 +46,11 @@ class RecommendationViewModel @Inject constructor(
         analyzeMood(mood.value.toMoodLabel(), note.value)
     }
 
-    fun fetchVideosByMood(apiKey: String, mood: Int) {
+    fun fetchVideosByMood(mood: Int) {
         Log.d("RecommendationViewModel", "Fetching videos for mood: $mood")
         viewModelScope.launch {
             _videoState.value = UiState.Loading
-            recommendationRepository.getVideosByMood(apiKey, mood).collect { result ->
+            recommendationRepository.getVideosByMood(mood).collect { result ->
                 _videoState.value = result.fold(
                     onSuccess = {
                         Log.d("RecommendationViewModel", "Fetched videos: $it")

@@ -19,7 +19,7 @@ class RecommendationRepository @Inject constructor(
         }
     }
 
-    fun getVideosByMood(apiKey: String, mood: Int): Flow<Result<List<VideoItem>>> = safeCall {
+    fun getVideosByMood(mood: Int): Flow<Result<List<VideoItem>>> = safeCall {
         val query = when (mood) {
             0 -> "meditation for stress"
             1 -> "meditation for sadness"
@@ -28,6 +28,6 @@ class RecommendationRepository @Inject constructor(
             4 -> "happy meditation"
             else -> "guided meditation"
         }
-        apiService.getYouTubeVideos(apiKey, query)
+        apiService.getYouTubeVideos(query)
     }
 }

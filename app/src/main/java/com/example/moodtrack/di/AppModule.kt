@@ -2,6 +2,7 @@ package com.example.moodtrack.di
 
 import android.content.Context
 import androidx.room.Room
+import com.example.moodtrack.BuildConfig
 import com.example.moodtrack.data.local.dao.MoodDao
 import com.example.moodtrack.data.local.database.MoodDatabase
 import com.example.moodtrack.data.local.preferences.UserPreferences
@@ -24,6 +25,7 @@ import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import javax.inject.Singleton
+
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -88,13 +90,13 @@ object AppModule {
     @Provides
     @Singleton
     fun provideYoutubeApiService(): YoutubeApiService {
-        return YoutubeApiService()
+        return YoutubeApiService(BuildConfig.YOUTUBE_API_KEY)
     }
 
     @Provides
     @Singleton
     fun provideOpenAIService(client: HttpClient): OpenAIService {
-        return OpenAIService(client)
+        return OpenAIService(client, BuildConfig.OPENAI_API_KEY)
     }
 
     @Provides
