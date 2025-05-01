@@ -1,5 +1,6 @@
 package com.example.moodtrack.data.repository
 
+import android.util.Log
 import com.example.moodtrack.data.local.preferences.UserPreferences
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
@@ -42,8 +43,10 @@ class AuthRepository @Inject constructor(
                     user?.uid?.let { uid ->
                         userPreferences.saveUserId(uid)
                     }
+                    Log.d("AuthRepository", "Registrasi berhasil: ${auth.currentUser}")
                     trySend(Result.success(auth.currentUser))
                 } else {
+                    Log.d("AuthRepository", "Registrasi gagal: ${task.exception}")
                     trySend(Result.failure(task.exception ?: Exception("Registrasi gagal")))
                 }
                 close()

@@ -9,6 +9,7 @@ import com.example.moodtrack.ui.common.UiState
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -96,6 +97,38 @@ class AuthViewModel @Inject constructor(private val authRepository: AuthReposito
         }
     }
 
+//    fun registerWithEmail(email: String, password: String, confirmPassword: String) {
+//        Log.d("AuthViewModel", "Registering with email: $email");
+//        val validationErrors = inputValidation(email, password, confirmPassword, true)
+//        _errors.value = validationErrors
+//
+//        if (validationErrors.isNotEmpty()) return
+//
+//        _registerState.value = UiState.Loading
+//
+//        viewModelScope.launch {
+//            val isRegistered = checkIfEmailExists(email)
+//            Log.d("AuthViewModel", "Email sudah terdaftar: $isRegistered");
+//            if (isRegistered) {
+//                _registerState.value = UiState.Error("Email sudah terdaftar")
+//                return@launch
+//            }
+//
+//            authRepository.register(email, password).collect { result ->
+//                _registerState.value = result.fold(
+//                    onSuccess = {
+//                        Log.d("AuthViewModel", "Registrasi berhasil: $it");
+//                        UiState.Success(it)
+//                    },
+//                    onFailure = {
+//                        Log.d("AuthViewModel", "Registrasi gagal: ${it.message}");
+//                        UiState.Error(it.message ?: "Registrasi gagal")
+//                    }
+//                )
+//            }
+//        }
+//    }
+
     fun registerWithEmail(email: String, password: String, confirmPassword: String) {
         Log.d("AuthViewModel", "Registering with email: $email");
         val validationErrors = inputValidation(email, password, confirmPassword, true)
@@ -106,16 +139,21 @@ class AuthViewModel @Inject constructor(private val authRepository: AuthReposito
         _registerState.value = UiState.Loading
 
         viewModelScope.launch {
-            val isRegistered = checkIfEmailExists(email)
-            if (isRegistered) {
-                _registerState.value = UiState.Error("Email sudah terdaftar")
-                return@launch
-            }
-
             authRepository.register(email, password).collect { result ->
                 _registerState.value = result.fold(
-                    onSuccess = { UiState.Success(it) },
-                    onFailure = { UiState.Error(it.message ?: "Registrasi gagal") }
+                    onSuccess = {
+                        Log.d("AuthViewModel", "Registrasi berhasil: $it");
+                        UiState.Success(it)
+                    },
+                    onFailure = {
+                        val message = if (it is FirebaseAuthUserCollisionException) {
+                            "Email sudah terdaftar"
+                        } else {
+                            it.message ?: "Registrasi gagal"
+                        }
+                        Log.d("AuthViewModel", "Registrasi gagal: $message");
+                        UiState.Error(message)
+                    }
                 )
             }
         }

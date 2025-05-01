@@ -130,8 +130,9 @@ object AppModule {
     @Singleton
     fun provideProfileRepository(
         firestore: FirebaseFirestore,
+        userPreferences: UserPreferences
     ): ProfileRepository {
-        return ProfileRepository(firestore)
+        return ProfileRepository(firestore, userPreferences)
     }
 
 }

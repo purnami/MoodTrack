@@ -131,7 +131,9 @@ fun ProfileScreen(
 
                     var isEditing by remember { mutableStateOf(false) }
 
-                    if (nameInput.isBlank() || isEditing) {
+//                    if (nameInput.isBlank() || isEditing) {
+
+                    if (isEditing) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier
@@ -165,7 +167,7 @@ fun ProfileScreen(
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             Text(
-                                text = nameInput,
+                                text = nameInput.ifBlank { "Nama Pengguna" },
                                 style = MaterialTheme.typography.titleMedium,
                                 modifier = Modifier.padding(end = 4.dp),
                                 maxLines = 1,
@@ -173,7 +175,7 @@ fun ProfileScreen(
                             )
 
                             IconButton(
-                                onClick = { isEditing = true },
+                                onClick = { isEditing = true }, // Masuk ke mode edit
                                 modifier = Modifier.size(24.dp)
                             ) {
                                 Icon(
