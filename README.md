@@ -18,7 +18,7 @@ MoodTrack adalah aplikasi kesehatan mental yang membantu pengguna melacak suasan
 
 1. Clone repository ini:
    ```bash
-   git clone https://github.com/purnami/moodtrack.git
+   git clone https://github.com/purnami/MoodTrack.git
    ```
 2. Buka dengan Android Studio (direkomendasikan versi terbaru).
 3. Sinkronisasi Gradle dan pastikan koneksi internet aktif.
