@@ -1,53 +1,105 @@
-Panduan Langkah demi Langkah Menggunakan Aplikasi
-1. Autentikasi
-    a. Login atau Registrasi:
-     - Saat pertama kali membuka aplikasi, pengguna akan diarahkan ke halaman login. Jika belum memiliki akun, klik tombol "Belum punya akun? Daftar" di bawah tombol login.
-     - Untuk registrasi, masukkan alamat email, password (minimal 8 karakter), dan konfirmasi password. Tekan tombol Daftar untuk melanjutkan.
-     - Setelah registrasi, pengguna akan diarahkan kembali ke halaman login untuk melakukan login dengan email dan password yang sudah didaftarkan.
-    b. Masuk ke Home Screen:
-     - Setelah berhasil login, pengguna akan diarahkan ke halaman Home Screen, yang merupakan tampilan utama aplikasi.
-     - Di Home Screen terdapat 4 menu pada bottom navigation bar yaitu mood, statistik, self test, dan profile.
+# 📱 MoodTrack - Panduan Penggunaan Aplikasi
 
-2. Mood Tracker
-    a. Input Mood:
-     - Pada halaman Mood Tracker, pilih emoji yang sesuai dengan suasana hati saat itu dan tambahkan catatan jika diperlukan.
-     - Tekan tombol Catat Mood setelah memilih mood dan menulis catatan.
-    b. Lihat Rekomendasi Aktivitas:
-     - Setelah mencatat mood, pengguna akan diberikan pilihan untuk melihat rekomendasi aktivitas yang sesuai dengan mood tersebut.
-     - Jika ingin melihat rekomendasi, tekan tombol Lihat Rekomendasi.
-     - Jika tidak ingin melihat rekomendasi, tekan tombol Tutup.
-    c. Tampilkan Kegiatan:
-     - Pada halaman rekomendasi, pengguna bisa melihat aktivitas, video meditasi, dan musik relaksasi yang disarankan berdasarkan mood yang dipilih.
-     - Pengguna dapat langsung memutar video atau musik dengan menekan daftar yang ada.
-       
-3. Statistik Mood
-    a. Melihat Grafik Mood:
-     - Di halaman Statistik, pengguna dapat melihat grafik perubahan mood berdasarkan data yang telah dicatat sebelumnya.
-    b. Pilih Rentang Waktu:
-     - Pengguna bisa memilih tampilan statistik mood berdasarkan periode harian, mingguan, atau bulanan.
-    c. Insight Statistik:
-     - Aplikasi akan memberikan insight berdasarkan data statistik yang dipilih, untuk membantu pengguna memahami pola emosional mereka.
+MoodTrack adalah aplikasi kesehatan mental yang membantu pengguna melacak suasana hati, mendapatkan rekomendasi aktivitas, melakukan self-assessment, dan menganalisis pola emosi berdasarkan data.
 
-4. Self-Assessment
-    a. Mengisi Pertanyaan:
-     - Pada halaman Self-Assessment, pengguna akan disajikan dengan 10 pertanyaan yang berkaitan dengan kesehatan mental.
-     - Pastikan untuk menjawab semua pertanyaan untuk mendapatkan hasil yang akurat.
-    b. Lihat Hasil:
-     - Setelah selesai menjawab pertanyaan, tekan tombol Lihat Hasil.
-     - Tunggu beberapa saat untuk melihat analisis hasil dari jawaban yang diberikan.
-    c. Hasil Analisis:
-     - Hasil analisis akan ditampilkan di bawah tombol. Pengguna dapat melihat gambaran umum dari kondisi emosional mereka berdasarkan jawaban yang diberikan.
-       
-5. Profile
-    a. Mengedit Foto Profil dan Nama:
-     - Di halaman Profile, pengguna dapat melihat foto profil dan nama mereka.
-     - Untuk mengganti foto profil, tekan ikon kamera di samping foto dan pilih foto baru dari galeri atau ambil foto baru menggunakan kamera.
-     - Untuk mengganti nama, tekan ikon pensil di samping nama dan masukkan nama baru yang diinginkan. Tekan Simpan setelah selesai.
-    b. Rekomendasi Aktivitas:
-     - Terdapat tombol Rekomendasi di halaman profile yang akan menampilkan rekomendasi aktivitas, video meditasi, atau musik relaksasi berdasarkan mood terakhir yang tercatat.
-       
-6. Notifikasi Mood-Based
-    a. Aktivasi Notifikasi:
-     - Aplikasi akan memberikan pengingat otomatis untuk mencatat mood harian, serta memberi notifikasi berdasarkan mood pengguna selama 1 minggu.
-     - Notifikasi harian akan muncul di jam 9 pagi, jam 5 sore, dan jam 9 malam.
-     - Notifikasi mingguan akan muncul 1 minggu sekali.
+---
+
+## 🔐 1. Autentikasi
+
+### a. Login atau Registrasi
+- Saat pertama kali membuka aplikasi, pengguna diarahkan ke halaman **Login**.
+- Jika belum memiliki akun, klik **"Belum punya akun? Daftar"**.
+- Isi formulir registrasi:
+  - Email
+  - Password (minimal 8 karakter)
+  - Konfirmasi Password
+- Setelah registrasi berhasil, pengguna diarahkan kembali ke halaman login.
+
+### b. Masuk ke Home Screen
+- Setelah login berhasil, pengguna akan langsung masuk ke halaman **Home Screen**.
+- Menu navigasi bawah terdiri dari:
+  - Mood
+  - Statistik
+  - Self Test
+  - Profile
+
+---
+
+## 😊 2. Mood Tracker
+
+### a. Input Mood
+- Pilih emoji yang sesuai dengan suasana hati Anda.
+- (Opsional) Tambahkan catatan.
+- Tekan tombol **"Catat Mood"** untuk menyimpan.
+
+### b. Lihat Rekomendasi Aktivitas
+- Setelah mencatat mood, pilih:
+  - **"Lihat Rekomendasi"** → Menampilkan aktivitas sesuai mood
+  - **"Tutup"** → Menutup tanpa melihat rekomendasi
+
+### c. Tampilkan Kegiatan
+- Di halaman rekomendasi:
+  - Lihat aktivitas
+  - Putar video meditasi
+  - Dengarkan musik relaksasi
+
+---
+
+## 📊 3. Statistik Mood
+
+### a. Melihat Grafik Mood
+- Buka tab **Statistik** untuk melihat perubahan suasana hati dalam grafik.
+
+### b. Pilih Rentang Waktu
+- Tersedia opsi tampilan harian, mingguan, dan bulanan.
+
+### c. Insight Statistik
+- Aplikasi menampilkan insight berbasis data mood untuk membantu memahami pola emosi.
+
+---
+
+## 🧠 4. Self-Assessment
+
+### a. Mengisi Pertanyaan
+- Terdiri dari **10 pertanyaan** terkait kesehatan mental.
+- Jawab seluruh pertanyaan dengan jujur.
+
+### b. Lihat Hasil
+- Setelah selesai, tekan **"Lihat Hasil"**.
+- Tunggu beberapa saat untuk analisis.
+
+### c. Hasil Analisis
+- Hasil ditampilkan di bawah tombol, memberikan gambaran kondisi emosional Anda.
+
+---
+
+## 👤 5. Profile
+
+### a. Mengedit Foto Profil dan Nama
+- Di halaman **Profile**:
+  - Tekan ikon kamera → Pilih foto dari galeri / kamera
+  - Tekan ikon pensil → Ubah nama → Tekan **"Simpan"**
+
+### b. Rekomendasi Aktivitas
+- Tersedia tombol **"Rekomendasi"** berdasarkan mood terakhir.
+
+---
+
+## 🔔 6. Notifikasi Mood-Based
+
+### a. Aktivasi Notifikasi
+- Aplikasi memberikan:
+  - **Pengingat harian**: Jam 09.00, 17.00, dan 21.00
+  - **Notifikasi mingguan**: Setiap 7 hari berdasarkan pola mood
+
+---
+
+## 📂 Dokumentasi Tambahan
+
+- Pastikan Anda telah menginstal semua dependensi sebelum menjalankan aplikasi.
+- Aplikasi dibangun dengan:
+  - Flutter + Cubit + GetIt
+  - Firebase Authentication & Firestore
+  - Room (untuk mood offline)
+  - WorkManager (notifikasi otomatis)
+  - MPAndroidChart, AudioDB API, YouTube API (untuk rekomendasi multimedia)
