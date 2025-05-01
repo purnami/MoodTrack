@@ -25,13 +25,16 @@ class RecommendationViewModel @Inject constructor(
     private val _videoState = MutableStateFlow<UiState<List<VideoItem>>>(UiState.Idle)
     val videoState: StateFlow<UiState<List<VideoItem>>> = _videoState.asStateFlow()
 
+    private val _musicState = MutableStateFlow<UiState<List<VideoItem>>>(UiState.Idle)
+    val musicState: StateFlow<UiState<List<VideoItem>>> = _musicState.asStateFlow()
+
     private val _insightState = MutableStateFlow<UiState<String>>(UiState.Idle)
     val insightState: StateFlow<UiState<String>> = _insightState.asStateFlow()
 
-    private val _mood = MutableStateFlow<Int>(0)
+    private val _mood = MutableStateFlow(0)
     val mood: StateFlow<Int> = _mood
 
-    private val _note = MutableStateFlow<String>("")
+    private val _note = MutableStateFlow("")
     val note: StateFlow<String> = _note
 
     fun setMood(mood: Int) {
@@ -58,6 +61,25 @@ class RecommendationViewModel @Inject constructor(
                     },
                     onFailure = {
                         Log.d("RecommendationViewModel", "Error fetching videos: ${it.message}")
+                        UiState.Error(it.message ?: "Terjadi kesalahan")
+                    }
+                )
+            }
+        }
+    }
+
+    fun fetchMusicsByMood(mood: Int) {
+        Log.d("RecommendationViewModel", "Fetching music for mood: $mood")
+        viewModelScope.launch {
+            _musicState.value = UiState.Loading
+            recommendationRepository.getMusicByMood(mood).collect { result ->
+                _musicState.value = result.fold(
+                    onSuccess = {
+                        Log.d("RecommendationViewModel", "Fetched music: $it")
+                        UiState.Success(it)
+                    },
+                    onFailure = {
+                        Log.d("RecommendationViewModel", "Error fetching music: ${it.message}")
                         UiState.Error(it.message ?: "Terjadi kesalahan")
                     }
                 )

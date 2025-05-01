@@ -105,6 +105,7 @@ dependencies {
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.hilt.work)
 
     // Navigation Component (opsional jika pakai navigation)
     implementation(libs.androidx.navigation.compose)
@@ -138,10 +139,6 @@ dependencies {
 //    implementation("androidx.compose.material3:material-pullrefresh:1.3.2")
 //    implementation("androidx.compose.material3:material3:1.3.2")
     implementation("androidx.compose.material3:material3:1.4.0-alpha12")
-//    implementation("androidx.compose.material3:material3-pullrefresh:1.4.0-alpha01")
 
-
-
-
-//    implementation("androidx.compose.material:material-pullrefresh:1.0.0")
+//    implementation("com.github.DroidNinja:Android-ImagePicker:2.0.0")
 }

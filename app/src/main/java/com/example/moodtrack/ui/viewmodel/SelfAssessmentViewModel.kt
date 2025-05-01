@@ -47,6 +47,8 @@ class SelfAssessmentViewModel @Inject constructor(
 
     fun submitAssessment() {
         viewModelScope.launch {
+            _result.value = UiState.Loading
+
             val formattedAnswers = _answers.value.mapIndexed { i, answer ->
                 "${i + 1}. ${questions[i].question}: $answer"
             }.joinToString("\n")

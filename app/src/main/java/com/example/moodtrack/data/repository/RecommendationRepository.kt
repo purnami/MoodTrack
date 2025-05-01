@@ -30,4 +30,17 @@ class RecommendationRepository @Inject constructor(
         }
         apiService.getYouTubeVideos(query)
     }
+
+    fun getMusicByMood(mood: Int): Flow<Result<List<VideoItem>>> = safeCall {
+        val query = when (mood) {
+            0 -> "relaxing music for stress relief"
+            1 -> "soothing music for sadness"
+            2 -> "calm background music"
+            3 -> "energetic focus music"
+            4 -> "happy uplifting music"
+            else -> "relaxing instrumental music"
+        }
+        apiService.getYouTubeVideos(query)
+    }
+
 }

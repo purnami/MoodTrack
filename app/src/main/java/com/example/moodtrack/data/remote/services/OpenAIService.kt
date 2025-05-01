@@ -1,6 +1,7 @@
 package com.example.moodtrack.data.remote.services
 
 import android.util.Log
+import com.example.moodtrack.core.utils.toMoodLabel
 import com.example.moodtrack.data.local.entity.MoodEntity
 import com.example.moodtrack.data.remote.request.MessageRequest
 import com.example.moodtrack.data.remote.request.OpenAIRequest
@@ -76,6 +77,34 @@ class OpenAIService(
             systemPrompt = "Kamu adalah asisten psikologis empatik yang mampu menganalisis mood dengan bijak.",
             userPrompt = prompt
         )
+    }
+
+    suspend fun generatePromptForWeeklyInsight(moodList: List<MoodEntity>): String {
+        if (moodList.isEmpty()) return "Tidak ada data mood untuk dianalisis."
+
+        val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale("id", "ID"))
+
+        val moodSummary = moodList.joinToString(separator = "\n") { mood ->
+            val date = dateFormat.format(Date(mood.timestamp))
+            val moodName = mood.mood.toMoodLabel()
+            val note = mood.note?.ifBlank { "tidak ada catatan" } ?: "tidak ada catatan"
+            "- $date: $moodName ($note)"
+        }
+
+        val prompt = """
+        Berikut adalah data suasana hati pengguna selama seminggu terakhir:
+
+        $moodSummary
+
+        Berdasarkan data tersebut, berikan insight singkat dalam 2-3 kalimat pendek yang menggambarkan kondisi emosional pengguna selama seminggu terakhir. 
+        Gunakan bahasa Indonesia yang sopan, positif, dan mudah dimengerti. Jika ada pola tertentu (seperti suasana hati membaik/menurun atau stres), mohon sebutkan. Tambahkan saran ringan jika perlu. Gunakan kata kamu dari pada pengguna
+    """.trimIndent()
+
+        return requestToOpenAI(
+            systemPrompt = "Kamu adalah asisten psikologis empatik yang mampu menganalisis mood dengan bijak.",
+            userPrompt = prompt
+        )
+
     }
 
     private suspend fun requestToOpenAI(systemPrompt: String, userPrompt: String): String {

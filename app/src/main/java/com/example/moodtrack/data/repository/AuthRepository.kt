@@ -67,8 +67,6 @@ class AuthRepository @Inject constructor(
         auth.signOut()
     }
 
-    fun getCurrentUserId(): String = auth.currentUser!!.uid
-
     fun getCurrentUserFlow(): Flow<FirebaseUser?> = callbackFlow {
         val listener = FirebaseAuth.AuthStateListener { auth ->
             trySend(auth.currentUser)

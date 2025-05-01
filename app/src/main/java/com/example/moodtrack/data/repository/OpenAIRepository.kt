@@ -30,4 +30,9 @@ class OpenAIRepository @Inject constructor(
     fun getMoodInsightFromList(moodList: List<MoodEntity>): Flow<Result<String>> = safeCall {
         openAIService.getMoodInsightFromList(moodList)
     }
+
+    fun getMoodInsightWeekly(moodList: List<MoodEntity>): Flow<Result<String>> = safeCall {
+        openAIService.generatePromptForWeeklyInsight(moodList)
+    }
+
 }

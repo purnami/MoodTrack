@@ -11,6 +11,7 @@ import com.example.moodtrack.data.remote.services.YoutubeApiService
 import com.example.moodtrack.data.repository.AuthRepository
 import com.example.moodtrack.data.repository.MoodRepository
 import com.example.moodtrack.data.repository.OpenAIRepository
+import com.example.moodtrack.data.repository.ProfileRepository
 import com.example.moodtrack.data.repository.RecommendationRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -123,6 +124,14 @@ object AppModule {
         openAIService: OpenAIService
     ): OpenAIRepository {
         return OpenAIRepository(openAIService)
+    }
+
+    @Provides
+    @Singleton
+    fun provideProfileRepository(
+        firestore: FirebaseFirestore,
+    ): ProfileRepository {
+        return ProfileRepository(firestore)
     }
 
 }

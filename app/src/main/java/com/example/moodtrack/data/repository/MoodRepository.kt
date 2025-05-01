@@ -1,11 +1,7 @@
 package com.example.moodtrack.data.repository
 
-import android.content.Context
 import android.util.Log
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
 import com.example.moodtrack.core.utils.MoodPeriod
-import com.example.moodtrack.core.workers.MoodNotificationWorker
 import com.example.moodtrack.data.local.dao.MoodDao
 import com.example.moodtrack.data.local.entity.MoodEntity
 import com.example.moodtrack.data.local.preferences.UserPreferences
@@ -17,7 +13,6 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 import java.util.Calendar
 import java.util.UUID
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class MoodRepository @Inject constructor(
@@ -39,24 +34,11 @@ class MoodRepository @Inject constructor(
         saveMoodToFirestore(moodEntity)
     }
 
-    fun getAllMoods(): Flow<List<MoodEntity>> = moodDao.getAllMoods()
-
     fun getMoodsByCurrentUser(): Flow<List<MoodEntity>> = flow {
         val userId = userPreferences.getUserId()
         if (userId != null) {
             emitAll(moodDao.getMoodsByUser(userId))
         }
-    }
-
-    fun getMoodsInRange(startTime: Long, endTime: Long): Flow<List<MoodEntity>> =
-        moodDao.getMoodsInRange(startTime, endTime)
-
-    suspend fun deleteMood(mood: MoodEntity) {
-        moodDao.deleteMood(mood)
-    }
-
-    suspend fun clearAllMoods() {
-        moodDao.clearAllMoods()
     }
 
     private suspend fun saveMoodToFirestore(mood: MoodEntity) {
@@ -69,11 +51,6 @@ class MoodRepository @Inject constructor(
         } catch (e: Exception) {
             Log.e("Firestore", "Gagal menyimpan mood", e)
         }
-    }
-
-    suspend fun getLastMoodByCurrentUser(): MoodEntity? {
-        val userId = userPreferences.getUserId() ?: return null
-        return moodDao.getLastMoodByUser(userId)
     }
 
     fun getMoodsByUserIdFromFirestore(period: MoodPeriod): Flow<List<MoodEntity>> = flow {
@@ -97,7 +74,7 @@ class MoodRepository @Inject constructor(
                     }
 
                     MoodPeriod.WEEKLY -> {
-                        now.set(Calendar.DAY_OF_WEEK, now.firstDayOfWeek)
+                        now.add(Calendar.DAY_OF_YEAR, -7)
                         now.set(Calendar.HOUR_OF_DAY, 0)
                         now.set(Calendar.MINUTE, 0)
                         now.set(Calendar.SECOND, 0)
@@ -107,6 +84,7 @@ class MoodRepository @Inject constructor(
 
                     MoodPeriod.MONTHLY -> {
                         now.set(Calendar.DAY_OF_MONTH, 1)
+                        now.add(Calendar.MONTH, -1)
                         now.set(Calendar.HOUR_OF_DAY, 0)
                         now.set(Calendar.MINUTE, 0)
                         now.set(Calendar.SECOND, 0)
@@ -138,46 +116,23 @@ class MoodRepository @Inject constructor(
         }
     }
 
-    fun scheduleMoodNotifications(context: Context) {
-        Log.d("MoodNotification", "Scheduling mood notifications")
-        val calendar = Calendar.getInstance()
+    suspend fun getLatestMoodFromFirestore(): MoodEntity? {
+        val userId = userPreferences.getUserId() ?: return null
+        Log.d("Firestore", "Mencari mood untuk userId: $userId")
+        return try {
+            val querySnapshot = firestore.collection("moods")
+                .whereEqualTo("userId", userId)
+                .orderBy("timestamp", Query.Direction.DESCENDING)
+                .limit(1)
+                .get()
+                .await()
 
-        calendar.set(Calendar.HOUR_OF_DAY, 9)
-        calendar.set(Calendar.MINUTE, 0)
-        val morningReminder = OneTimeWorkRequestBuilder<MoodNotificationWorker>()
-            .setInitialDelay(getInitialDelay(calendar), TimeUnit.MILLISECONDS)
-            .build()
+            val document = querySnapshot.documents.firstOrNull()
+            document?.toObject(MoodEntity::class.java)
 
-        calendar.set(Calendar.HOUR_OF_DAY, 15)
-        calendar.set(Calendar.MINUTE, 0)
-        val afternoonReminder = OneTimeWorkRequestBuilder<MoodNotificationWorker>()
-            .setInitialDelay(getInitialDelay(calendar), TimeUnit.MILLISECONDS)
-            .build()
-
-        calendar.set(Calendar.HOUR_OF_DAY, 21)
-        calendar.set(Calendar.MINUTE, 0)
-        val eveningReminder = OneTimeWorkRequestBuilder<MoodNotificationWorker>()
-            .setInitialDelay(getInitialDelay(calendar), TimeUnit.MILLISECONDS)
-            .build()
-
-        WorkManager.getInstance(context.applicationContext).apply {
-            enqueue(morningReminder)
-            enqueue(afternoonReminder)
-            enqueue(eveningReminder)
-        }
-
-        Log.d("MoodNotification", "Scheduled notifications at 9 AM, 3 PM, and 9 PM.")
-    }
-
-    private fun getInitialDelay(calendar: Calendar): Long {
-        val currentTime = System.currentTimeMillis()
-        val targetTime = calendar.timeInMillis
-
-        Log.d("MoodNotification", "Current time: $currentTime, Target time: $targetTime")
-        return if (targetTime > currentTime) {
-            targetTime - currentTime
-        } else {
-            targetTime + TimeUnit.DAYS.toMillis(1) - currentTime
+        } catch (e: Exception) {
+            Log.e("Firestore", "Gagal mengambil mood terakhir dari Firestore", e)
+            null
         }
     }
 }

@@ -6,14 +6,12 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -29,12 +27,10 @@ import com.example.moodtrack.ui.screen.profile.ProfileScreen
 import com.example.moodtrack.ui.screen.recomendation.RecommendationScreen
 import com.example.moodtrack.ui.screen.selfassessment.SelfAssessmentScreen
 import com.example.moodtrack.ui.screen.statistics.MoodStatisticsScreen
-import com.example.moodtrack.ui.viewmodel.MoodViewModel
 
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    moodViewModel: MoodViewModel = hiltViewModel(),
     rootNavController: NavHostController
 ){
     val navController = rememberNavController()
@@ -45,10 +41,6 @@ fun HomeScreen(
     val context = LocalContext.current
     var backPressedTime by remember { mutableStateOf(0L) }
     val backPressThreshold = 2000L
-
-    LaunchedEffect(Unit) {
-        moodViewModel.scheduleMoodNotifications(context)
-    }
 
     BackHandler {
         val currentTime = System.currentTimeMillis()
@@ -95,11 +87,9 @@ fun HomeScreen(
                         popUpTo(0) { inclusive = true }
                     }
                 },
-                onNavigateToSettings = {},
-                onNavigateToRecommendation = {
-                    navController.navigate(Screen.Recommendations.route)
+                onNavigateToRecommendation = { mood, note ->
+                    navController.navigate(Screen.Recommendations.createRoute(mood, note))
                 }
-
             ) }
 
             composable(
