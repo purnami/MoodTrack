@@ -33,7 +33,7 @@ fun MoodInputScreen(
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            "How Do You Feel Today?",
+            "Bagaimana Perasaan Anda Hari Ini?",
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold
         )
@@ -75,7 +75,7 @@ fun MoodInputScreen(
         OutlinedTextField(
             value = note,
             onValueChange = { moodViewModel.updateNote(it) },
-            label = { Text("Write a note...") },
+            label = { Text("Tulis catatan...") },
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -87,7 +87,7 @@ fun MoodInputScreen(
             },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Note Mood")
+            Text("Catat Mood")
         }
     }
 
