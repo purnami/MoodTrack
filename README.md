@@ -1,6 +1,79 @@
+
 # 📱 MoodTrack - Panduan Penggunaan Aplikasi
 
 MoodTrack adalah aplikasi kesehatan mental yang membantu pengguna melacak suasana hati, mendapatkan rekomendasi aktivitas, melakukan self-assessment, dan menganalisis pola emosi berdasarkan data.
+
+---
+
+## 📦 Disediakan README lengkap berisi:
+
+- ✅ Petunjuk instalasi  
+- ✅ Struktur proyek  
+- ✅ Teknologi yang digunakan  
+- ✅ Alur pengembangan  
+
+---
+
+## 🔧 Petunjuk Instalasi
+
+1. Clone repository ini:
+   ```bash
+   git clone https://github.com/purnami/moodtrack.git
+   ```
+2. Buka dengan Android Studio (direkomendasikan versi terbaru).
+3. Sinkronisasi Gradle dan pastikan koneksi internet aktif.
+4. Jalankan aplikasi di emulator atau perangkat fisik Android minimal API 26.
+
+---
+
+## 🗂️ Struktur Proyek
+
+```
+MoodTrack/
+├── app/                     # Modul utama
+│   ├── data/                # Layer data (Room, Firestore, API)
+│   ├── domain/              # Layer domain (use case, model)
+│   ├── presentation/        # Layer UI (screen, ViewModel)
+│   ├── di/                  # Dependency Injection (Hilt)
+│   ├── utils/               # Utilitas umum
+│   └── MainActivity.kt
+├── build.gradle
+└── README.md
+```
+
+---
+
+## 💡 Teknologi yang Digunakan
+
+| Teknologi | Keterangan |
+|----------|------------|
+| **Kotlin** | Bahasa pemrograman utama |
+| **Jetpack Compose** | Untuk membangun UI modern |
+| **MVVM + Clean Architecture** | Struktur proyek yang modular dan maintainable |
+| **Room Database** | Penyimpanan data mood secara lokal |
+| **Firebase Firestore** | Penyimpanan data pengguna di cloud |
+| **Ktor** | Client HTTP untuk OpenAI & YouTube API |
+| **Hilt** | Dependency injection |
+| **Coroutines + Flow** | Pengelolaan asynchronous dan state |
+| **WorkManager** | Penjadwalan notifikasi berbasis mood |
+
+---
+
+## 🔁 Alur Pengembangan
+
+1. **Perencanaan**:
+   - Menentukan fitur utama: Mood Tracker, Statistik, Self Test, Rekomendasi.
+   - Memilih arsitektur dan teknologi pendukung.
+2. **Pengembangan**:
+   - Implementasi MVVM + Clean Architecture.
+   - Integrasi Room, Firebase, OpenAI API, dan YouTube API.
+   - Pembuatan UI dengan Jetpack Compose.
+3. **Pengujian**:
+   - Melakukan uji coba fitur-fitur utama.
+   - Perbaikan UI berdasarkan feedback mentor.
+4. **Dokumentasi & Deployment**:
+   - Dokumentasi fitur dan struktur proyek di README.
+   - Aplikasi diuji pada perangkat fisik dan emulator.
 
 ---
 
@@ -94,12 +167,12 @@ MoodTrack adalah aplikasi kesehatan mental yang membantu pengguna melacak suasan
 
 ---
 
-## 📂 Dokumentasi Tambahan
+## 🤝 Kontribusi
 
-- Pastikan Anda telah menginstal semua dependensi sebelum menjalankan aplikasi.
-- Aplikasi dibangun dengan:
-  - Flutter + Cubit + GetIt
-  - Firebase Authentication & Firestore
-  - Room (untuk mood offline)
-  - WorkManager (notifikasi otomatis)
-  - MPAndroidChart, AudioDB API, YouTube API (untuk rekomendasi multimedia)
+Pull request dan masukan sangat terbuka. Silakan fork dan kontribusikan peningkatan!
+
+---
+
+## 📄 Lisensi
+
+MoodTrack dirilis dengan lisensi MIT. Silakan gunakan dan modifikasi untuk keperluan pembelajaran dan sosial.
