@@ -86,10 +86,12 @@ MoodTrack/
   - Email
   - Password (minimal 8 karakter)
   - Konfirmasi Password
-- Setelah registrasi berhasil, pengguna diarahkan kembali ke halaman login.
+- Tekan tombol Daftar untuk melanjutkan. 
+- Jika sudah pernah melakukan registrasi, maka pengguna silahkan melakukan login dengan memasukkan alamat email dan password yang telah terdaftar. Tekan tombol Login untuk melanjutkan.
+
 
 ### b. Masuk ke Home Screen
-- Setelah login berhasil, pengguna akan langsung masuk ke halaman **Home Screen**.
+- Setelah registrasi atau login berhasil, pengguna akan langsung masuk ke halaman **Home Screen**.
 - Menu navigasi bawah terdiri dari:
   - Mood
   - Statistik
